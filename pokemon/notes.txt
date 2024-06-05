@@ -1,0 +1,22 @@
+// first we need to import Platform for it.
+
+marginTop: Platform.OS === "android" ? 30 : 0,  // this will only add marginTop to android devices only, if you are using IOS then it will add 0
+
+
+// platform specific style
+ ...Platform.select({
+            ios: {
+                shadowOffset: {
+                    width: 2,
+                    height: 2
+                },
+                shadowColor: "#333",
+                shadowOpacity: 0.3,
+                shadowRadius: 4,
+            },
+            android: {
+                elevation: 5,
+            }
+        })
+
+
