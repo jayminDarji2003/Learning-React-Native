@@ -13,8 +13,9 @@ export default function Box({ children, style }) {
 
 const styles = StyleSheet.create({
     item: {
+        // flex: 1
         height: 90,
-        // width: 200,
+        width: 180,
         // backgroundColor: "red"
     },
     innerText: {

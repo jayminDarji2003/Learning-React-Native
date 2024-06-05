@@ -1,0 +1,43 @@
+Flexbox in React native app
+
+1. flex : 1
+    - This will take the available space in the device
+
+2. flexDirection :
+    - column : default value : top to bottom
+    - column-reverse : bottom to top
+    - row : left to right
+    - row-reverse : right to left
+
+3. justifyContent :
+    - flex-start : by default
+    - flex-end
+    - center
+    - space-between
+    - space-around
+    - space-evenly
+
+4. alignItems :
+    - stretch : by default
+    - flex-start
+    - flex-end
+    - baseline
+
+5. alignSelf -> this property is used to align the perticular item
+    - auto : by default
+    - flex-start 
+    - flex-end
+    - stretch
+
+6. flexWrap
+    - nowrap : by default
+    - wrap
+
+7. alignContent
+    - flex-start
+    - flex-end
+    - center
+
+8. flexBasis
+9. flexShrink
+10.flexGrow
