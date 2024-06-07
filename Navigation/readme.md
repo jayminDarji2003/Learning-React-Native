@@ -110,3 +110,26 @@ export default function HomeScreen() {
     )
 }
 ```
+
+## Passing data between screens.
+
+```
+<Button title="Go to about"
+        onPress={() => navigation.navigate('About', {
+            name: "jaymin darji"
+        })}
+/>
+```
+
+## Access data
+
+```
+export default function AboutScreen({route }) {
+    const { name } = route.params;
+
+    return (
+            <Text>About screen : {name}</Text>
+    )
+}
+
+```
