@@ -1,4 +1,4 @@
-import { Account, Avatars, Client, Databases, ID } from 'react-native-appwrite';
+import { Account, Avatars, Client, Databases, ID, Query } from 'react-native-appwrite';
 // 666560ec0007cf156fc0
 // 666562e6001dbe8c4c87
 // 6665632c000731addced
@@ -51,9 +51,9 @@ export const createUser = async (username, email, password) => {
             ID.unique(),
             {
                 accountId: newAccount.$id,
-                email,
-                password,
-                avatar: avatarUrl
+                email: email,
+                username: username,
+                avatar: avatarUrl,
             }
         )
 
@@ -67,15 +67,10 @@ export const createUser = async (username, email, password) => {
 
 // login user
 export async function signIn(email, password) {
-    // try {
-    //     const session = await account.createEmailSession(email, password);
-    //     return session;
-    // } catch (error) {
-    //     throw new Error(error);
-    // }
-
     try {
+        //console.log("Started sign in process => ", email, password)
         const session = await account.createEmailPasswordSession(email, password);
+        // console.log("ended sign in process => ", session)
         return session;
     } catch (error) {
         console.error("SignIn Error: ", error);
@@ -83,6 +78,27 @@ export async function signIn(email, password) {
     }
 }
 
+
+// get data of current user
+export const getCurrentUser = async () => {
+    try {
+        const currentAccount = await account.get();
+
+        if (!currentAccount) throw Error;
+
+        const currentUser = await databases.listDocuments(
+            config.databaseId,
+            config.userCollectionId,
+            [Query.equal("accountId", currentAccount.$id)]
+        )
+
+        if (!currentUser) throw Error;
+
+        return currentUser.documents[0];
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 
 
