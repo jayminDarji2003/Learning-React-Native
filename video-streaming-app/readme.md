@@ -39,3 +39,5 @@ content: ["./app/**/*.{js,jsx,ts,tsx}", "./components/**/*.{js,jsx,ts,tsx}"],
 ```
 
 ### com.jdtech.aora
+
+## Next two days I'll finish this app. This app is using AppWrite for backend. great app making by me
