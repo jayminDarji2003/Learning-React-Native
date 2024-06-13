@@ -38,6 +38,10 @@ change in app.json
 content: ["./app/**/*.{js,jsx,ts,tsx}", "./components/**/*.{js,jsx,ts,tsx}"],
 ```
 
-### com.jdtech.aora
+### For animation and video playing
 
-## Next two days I'll finish this app. This app is using AppWrite for backend. great app making by me
+```
+ npm install react-native-animatable expo-av
+```
+
+repo link : https://github.com/oblador/react-native-animatable

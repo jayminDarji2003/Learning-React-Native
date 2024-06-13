@@ -101,4 +101,34 @@ export const getCurrentUser = async () => {
 }
 
 
+// get all posts(fetch all posts)
+export const getAllPosts = async () => {
+    try {
+        const posts = await databases.listDocuments(
+            config.databaseId,
+            config.videoCollectionId,
+        )
+
+        return posts.documents;
+    } catch (error) {
+        console.log("ERROR OCCURED WHILE FETCHING ALL POSTS")
+        throw new Error(error);
+    }
+}
+
+// get latest posts(fetch all posts)
+export const getLatestPosts = async () => {
+    try {
+        const posts = await databases.listDocuments(
+            config.databaseId,
+            config.videoCollectionId,
+            [Query.orderDesc('$createdAt', Query.limit(7))]
+        )
+
+        return posts.documents;
+    } catch (error) {
+        console.log("ERROR OCCURED WHILE FETCHING ALL POSTS")
+        throw new Error(error);
+    }
+}
 
