@@ -15,7 +15,7 @@ export default function App() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await fetch("https://jsonplaceholder.typicode.com/posts?_limit=10");
+      const response = await fetch("https://jsonplaceholder.typicode.com/posts");
       const data = await response.json();
       // console.log(data)
       setPosts(data);
