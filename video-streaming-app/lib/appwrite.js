@@ -132,3 +132,34 @@ export const getLatestPosts = async () => {
     }
 }
 
+// get search posts(fetch all posts)
+export const searchPosts = async (query) => {
+    try {
+        const posts = await databases.listDocuments(
+            config.databaseId,
+            config.videoCollectionId,
+            [Query.search('title', query)]
+        )
+
+        return posts.documents;
+    } catch (error) {
+        console.log("ERROR OCCURED WHILE FETCHING ALL POSTS")
+        throw new Error(error);
+    }
+}
+// get user posts data
+export const getUserPost = async (userId) => {
+    try {
+        const posts = await databases.listDocuments(
+            config.databaseId,
+            config.videoCollectionId,
+            [Query.equal('creator', userId)]
+        )
+
+        return posts.documents;
+    } catch (error) {
+        console.log("ERROR OCCURED WHILE FETCHING ALL POSTS")
+        throw new Error(error);
+    }
+}
+
