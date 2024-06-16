@@ -6,6 +6,7 @@ import { useState } from "react";
 import CustomButton from "../../components/CustomButton";
 import { Link, router } from "expo-router";
 import { signIn } from "../../lib/appwrite";
+import axios from "axios";
 
 const SignIn = () => {
   const [form, setForm] = useState({
@@ -23,7 +24,10 @@ const SignIn = () => {
     setIsSubmiting(true);
 
     try {
-      await signIn(form.email, form.password);
+      const result = await axios.post("http://192.168.119.122:4000/login", {
+        email: form.email,
+        password: form.password,
+      });
       //console.log("RESULT OF CREATING USER => ", result);
 
       //set it to global state.....

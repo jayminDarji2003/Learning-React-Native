@@ -6,6 +6,7 @@ import { useState } from "react";
 import CustomButton from "../../components/CustomButton";
 import { Link, router } from "expo-router";
 import { createUser } from "../../lib/appwrite";
+import axios from "axios";
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -24,7 +25,11 @@ const SignUp = () => {
     setIsSubmiting(true);
 
     try {
-      const result = await createUser(form.username, form.email, form.password);
+      const result = await axios.post("http://192.168.119.122:4000/signup", {
+        username: form.username,
+        email: form.email,
+        password: form.password,
+      });
       //console.log("RESULT OF CREATING USER => ", result);
 
       //set it to global state.....
@@ -101,9 +106,9 @@ const SignUp = () => {
             </Link>
           </View>
 
-          <Link href="/home" className="text-white">
+          {/* <Link href="/home" className="text-white">
             Go to home
-          </Link>
+          </Link> */}
         </View>
       </ScrollView>
     </SafeAreaView>
