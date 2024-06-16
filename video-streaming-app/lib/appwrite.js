@@ -163,3 +163,13 @@ export const getUserPost = async (userId) => {
     }
 }
 
+// log out function
+export const signOut = async () => {
+    try {
+        const session = await account.deleteSession("current");
+        return session;
+    } catch (error) {
+        throw new Error(error);
+        console.log("ERROR OCCURED WHILE LOGOUT USER.")
+    }
+}
