@@ -51,20 +51,6 @@ const videoFileUpload = async (req, res) => {
         const videoFile = req.files.video;
         //console.log("VIDEO FILE => ", videoFile)
 
-        // validation
-        // const supportedTypes = ["jpg", "jpeg", "png"];
-
-        // current file type
-        // const currentFileType = file.name.split(".")[1].toLowerCase();
-        // console.log("FILE EXTENSION : ", currentFileType);
-
-        // file type not supported
-        // if (!isFileTypeSupported(currentFileType, supportedTypes)) {
-        //     return res.status(400).json({
-        //         success: false,
-        //         message: "File type not supported"
-        //     })
-        // }
 
         // if file type is supported
         // upload file to cloudinary
@@ -102,61 +88,5 @@ const videoFileUpload = async (req, res) => {
     }
 }
 
-
-// video upload handler
-// exports.videoUpload = async (req, res) => {
-//     try {
-//         // fetch the data
-//         const { name, tags, email } = req.body;
-//         console.log(name, tags, email);
-
-//         // video file data
-//         const videoFile = req.files.video;
-//         console.log(videoFile)
-
-//         // validation
-//         const supportedTypes = ["mp4", "mp3", "mkv"];
-
-//         // current file type
-//         const currentFileType = videoFile.name.split(".")[1].toLowerCase();
-//         console.log("FILE EXTENSION : ", currentFileType);
-
-//         // file type not supported
-//         if (!isFileTypeSupported(currentFileType, supportedTypes)) {
-//             return res.status(400).json({
-//                 success: false,
-//                 message: "File type not supported"
-//             })
-//         }
-
-//         // file type is supported
-//         console.log("UPLOADING TO CLOUDINARY")
-//         const response = await videoUploadFileToCloudinary(videoFile, "dotbatch");
-//         // file = file name
-//         // dotbatch = folder name , it is in the cloudinary folder
-//         console.log("RESPONSE => ", response);
-
-//         // database entry
-//         console.log("DATABASE ENTRY CREATING");
-//         const fileData = await File.create({
-//             name,
-//             tags,
-//             email,
-//             fileUrl: response.url
-//         })
-//         console.log("DATABASE ENTRY DONE");
-
-//         res.json({
-//             success: true,
-//             message: "video created successfully created successfully"
-//         })
-//     } catch (e) {
-//         console.error("Something went wrong");
-//         res.status(400).json({
-//             success: false,
-//             message: "Something went wrong while uploading video"
-//         })
-//     }
-// }
 
 module.exports = videoFileUpload

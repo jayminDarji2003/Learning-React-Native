@@ -44,7 +44,7 @@ const SignIn = () => {
         password: form.password,
       });
 
-      //console.log("RESULT OF CREATING USER => ", result);
+      console.log("RESULT OF CREATING USER => ", result);
 
       const username = result?.data?.user?.username;
       const email = result?.data?.user?.email;
