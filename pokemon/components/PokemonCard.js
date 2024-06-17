@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet, Platform, Image } from "react-native";
+import { View, Text, StyleSheet, Platform, Image, TouchableOpacity } from "react-native";
+import Toast from "react-native-toast-message";
 
 const getTypeDetails = (type) => {
     switch (type.toLowerCase()) {
@@ -26,6 +27,15 @@ export default function PokemonCard({
 
     const { borderColor, emoji } = getTypeDetails(type);
 
+    const handleClicked = () => {
+        Toast.show({
+            type: 'success',
+            text1: `${emoji} ${type}`,
+            text2: "Clicked on the button"
+        });
+    }
+
+
     return (
         <View style={styles.card}>
             <View style={styles.nameContainer}>
@@ -37,12 +47,12 @@ export default function PokemonCard({
                 <Image source={image} style={styles.image} resizeMode="contain" accessibilityLabel={`${name} Pokemon`} />
             </View>
 
-            <View style={styles.typeContainer}>
+            <TouchableOpacity style={styles.typeContainer} onPress={handleClicked}>
                 <View style={[styles.badge, { borderColor: borderColor }]}>
                     <Text style={styles.typeEmoji}>{emoji}</Text>
                     <Text style={styles.typeText}>{type}</Text>
                 </View>
-            </View>
+            </TouchableOpacity>
 
             <View style={styles.moveContainer}>
                 <Text style={styles.moveText}>
@@ -126,10 +136,10 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: "bold"
     },
-    weeknessContainer:{
+    weeknessContainer: {
         marginBottom: 8,
     },
-    weeknessText:{
+    weeknessText: {
         fontSize: 18,
         fontWeight: "bold"
     }

@@ -1,5 +1,6 @@
 import { StyleSheet, SafeAreaView, Platform, ScrollView } from 'react-native';
 import PokemonCard from './components/PokemonCard';
+import Toast from 'react-native-toast-message';
 
 export default function App() {
 
@@ -47,6 +48,8 @@ export default function App() {
         <PokemonCard {...bulbasaurData} />
         <PokemonCard {...pikachuData} />
       </ScrollView>
+
+      <Toast />
     </SafeAreaView>
   );
 }

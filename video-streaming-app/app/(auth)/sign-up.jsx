@@ -8,6 +8,7 @@ import { Link, router } from "expo-router";
 import { createUser } from "../../lib/appwrite";
 import axios from "axios";
 import { useGlobalContext } from "../../context/GlobalProvider";
+import Toast from "react-native-toast-message";
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -21,12 +22,22 @@ const SignUp = () => {
   // using the context
   const { setIsLoggedIn, setUser } = useGlobalContext();
 
+  const validateEmail = (email) => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+  };
+
   const submit = async () => {
     if (!form.username || !form.password || !form.email) {
       Alert.alert("Error 😭", "Please fill all required fields");
     }
 
     setIsSubmiting(true);
+
+    if (!validateEmail(form.email)) {
+      Alert.alert("Error 😭", "Please enter a valid email address");
+      return;
+    }
 
     try {
       const result = await axios.post("http://192.168.119.122:4000/signup", {
@@ -45,8 +56,14 @@ const SignUp = () => {
       });
 
       router.replace("/home");
+
+      Toast.show({
+        type: "success",
+        text1: "Register",
+        text2: "Successfully register 👋",
+      });
     } catch (error) {
-      Alert.alert("Error 😭", error.message);
+      Alert.alert("Error 😭", error?.response?.data?.message);
     } finally {
       setIsSubmiting(false);
     }

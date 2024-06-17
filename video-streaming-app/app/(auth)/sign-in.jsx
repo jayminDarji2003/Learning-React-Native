@@ -8,6 +8,7 @@ import { Link, router } from "expo-router";
 import { signIn } from "../../lib/appwrite";
 import axios from "axios";
 import { useGlobalContext } from "../../context/GlobalProvider";
+import Toast from "react-native-toast-message";
 
 const SignIn = () => {
   const [form, setForm] = useState({
@@ -20,6 +21,11 @@ const SignIn = () => {
   // using the context
   const { setIsLoggedIn, setUser } = useGlobalContext();
 
+  const validateEmail = (email) => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+  };
+
   const submit = async () => {
     if (!form.password || !form.email) {
       Alert.alert("Error 😭", "Please fill all required fields");
@@ -27,12 +33,18 @@ const SignIn = () => {
 
     setIsSubmiting(true);
 
+    if (!validateEmail(form.email)) {
+      Alert.alert("Error 😭", "Please enter a valid email address");
+      return;
+    }
+
     try {
       const result = await axios.post("http://192.168.119.122:4000/login", {
         email: form.email,
         password: form.password,
       });
-      //console.log("RESULT OF CREATING USER => ", result.data.user);
+
+      //console.log("RESULT OF CREATING USER => ", result);
 
       const username = result?.data?.user?.username;
       const email = result?.data?.user?.email;
@@ -46,8 +58,15 @@ const SignIn = () => {
       });
 
       router.replace("/home");
+
+      Toast.show({
+        type: "success",
+        text1: "Login",
+        text2: "Successfully login 👋",
+      });
     } catch (error) {
-      Alert.alert("Error 😭", error.message);
+      Alert.alert("Error 😭", error?.response?.data?.message);
+      // console.log(error.response.data.message);
     } finally {
       setIsSubmiting(false);
     }

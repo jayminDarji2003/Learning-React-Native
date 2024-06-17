@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import icons from "../../constants/icons";
 import { router } from "expo-router";
-// import Toast from "react-native-toast-message";
+import Toast from "react-native-toast-message";
 
 const Profile = () => {
   const { user, setUser, isLoggedIn, setIsLoggedIn } = useGlobalContext();
@@ -16,11 +16,11 @@ const Profile = () => {
       email: "",
     });
     router.replace("/sign-in");
-    // Toast.show({
-    //   type: "success",
-    //   text1: "Logout",
-    //   text2: "Successfully logout 👋",
-    // });
+    Toast.show({
+      type: "success",
+      text1: "Logout",
+      text2: "Successfully logout 👋",
+    });
   };
 
   return (
