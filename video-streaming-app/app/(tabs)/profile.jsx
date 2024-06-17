@@ -1,48 +1,65 @@
-import { View, Text, FlatList } from "react-native";
-import React, { useEffect } from "react";
+import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
+import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SearchInput from "../../components/SearchInput";
-import EmptyState from "../../components/EmptyState";
-import { getUserPost } from "../../lib/appwrite";
-import useAppWrite from "../../lib/useAppWrite";
-import VideoCard from "../../components/VideoCard";
-import { useLocalSearchParams } from "expo-router";
-
 import { useGlobalContext } from "../../context/GlobalProvider";
+import icons from "../../constants/icons";
+import { router } from "expo-router";
+// import Toast from "react-native-toast-message";
 
 const Profile = () => {
-  const { user, setUser, setIsLoggedIn } = useGlobalContext();
-  // const { data: posts } = useAppWrite(() => getUserPost(user.$id));
-  console.log(user);
+  const { user, setUser, isLoggedIn, setIsLoggedIn } = useGlobalContext();
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUser({
+      username: "",
+      email: "",
+    });
+    router.replace("/sign-in");
+    // Toast.show({
+    //   type: "success",
+    //   text1: "Logout",
+    //   text2: "Successfully logout 👋",
+    // });
+  };
 
   return (
-    // <SafeAreaView className="bg-primary h-full">
-    //   <FlatList
-    //     data={posts}
-    //     keyExtractor={(item) => item.$id}
-    //     renderItem={({ item }) => <VideoCard item={item} />}
-    //     ListHeaderComponent={() => (
-    //       <View className="my-6 px-4">
-    //         <Text className="font-pmedium text-sm text-gray-100">
-    //           Search Results
-    //         </Text>
-    //         {/* <Text className="text-2xl font-psemibold text-white">{query}</Text> */}
+    <SafeAreaView className="h-full bg-primary p-5">
+      <ScrollView>
+        <View>
+          <TouchableOpacity className="items-end gap-1" onPress={handleLogout}>
+            <Image source={icons.logout} className="h-8 w-8" />
+            <Text className="text-sm font-semibold text-gray-100">Logout</Text>
+          </TouchableOpacity>
 
-    //         <View className="mt-6 mb-8">
-    //           {/* <SearchInput initialQuery={query} /> */}
-    //         </View>
-    //       </View>
-    //     )}
-    //     ListEmptyComponent={() => (
-    //       <EmptyState
-    //         title="No videos Found"
-    //         subtitle="No video found for this query."
-    //       />
-    //     )}
-    //   />
-    // </SafeAreaView>
+          <View className="my-3 ">
+            <View className=" items-center">
+              <View className="bg-blue-200 h-14 w-14 justify-center items-center  rounded-lg border border-secondary-100">
+                <Text className="text-5xl font-semibold">
+                  {user.username.charAt(0)}
+                </Text>
+              </View>
+              <Text className="text-gray-100 my-2 font-pregular text-xl font-semibold">
+                {user.username}
+              </Text>
+            </View>
 
-    <Text>hii</Text>
+            <View className="items-center flex-row justify-center mt-3 space-x-10">
+              <View className="justify-center items-center">
+                <Text className="text-gray-100 font-bold text-lg">10</Text>
+                <Text className="text-gray-100 font-bold text-md">Posts</Text>
+              </View>
+              <View className="justify-center items-center">
+                <Text className="text-gray-100 font-bold text-lg">1.2k</Text>
+                <Text className="text-gray-100 font-bold text-md">Views</Text>
+              </View>
+            </View>
+
+            <View className="border border-secondary-100 my-2 h-[100vh]"></View>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

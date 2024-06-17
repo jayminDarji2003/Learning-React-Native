@@ -5,13 +5,15 @@ import CustomButton from "../components/CustomButton";
 import { StatusBar } from "expo-status-bar";
 import { router, Redirect } from "expo-router";
 import { useGlobalContext } from "../context/GlobalProvider";
+// import Toast from "react-native-toast-message";
 
 export default function Index() {
-  const { isLoading, isLoggedIn } = useGlobalContext();
+  const { isLoggedIn } = useGlobalContext();
 
-  if (!isLoading && isLoggedIn) {
+  if (isLoggedIn) {
     return <Redirect href={"/home"} />;
   }
+
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView contentContainerStyle={{ height: "100%" }}>

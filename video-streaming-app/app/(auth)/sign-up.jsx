@@ -7,6 +7,7 @@ import CustomButton from "../../components/CustomButton";
 import { Link, router } from "expo-router";
 import { createUser } from "../../lib/appwrite";
 import axios from "axios";
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -16,6 +17,9 @@ const SignUp = () => {
   });
 
   const [isSubmiting, setIsSubmiting] = useState(false);
+
+  // using the context
+  const { setIsLoggedIn, setUser } = useGlobalContext();
 
   const submit = async () => {
     if (!form.username || !form.password || !form.email) {
@@ -30,10 +34,15 @@ const SignUp = () => {
         email: form.email,
         password: form.password,
       });
-      //console.log("RESULT OF CREATING USER => ", result);
+      //console.log("RESULT OF CREATING USER => ", result.data.user);
 
       //set it to global state.....
       // it is done by context
+      setIsLoggedIn(true);
+      setUser({
+        username: form.username,
+        email: form.email,
+      });
 
       router.replace("/home");
     } catch (error) {
