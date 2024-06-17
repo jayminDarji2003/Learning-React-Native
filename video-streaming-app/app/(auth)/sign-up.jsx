@@ -45,7 +45,9 @@ const SignUp = () => {
         email: form.email,
         password: form.password,
       });
-      //console.log("RESULT OF CREATING USER => ", result.data.user);
+      //console.log("RESULT OF CREATING USER => ", result);
+
+      const id = result?.data?.user?._id;
 
       //set it to global state.....
       // it is done by context
@@ -53,6 +55,7 @@ const SignUp = () => {
       setUser({
         username: form.username,
         email: form.email,
+        id: id,
       });
 
       router.replace("/home");

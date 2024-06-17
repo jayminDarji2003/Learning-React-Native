@@ -10,6 +10,7 @@ const GlobalProvider = ({ children }) => {
     const [user, setUser] = useState({
         username: "",
         email: "",
+        id: ""
     });
 
     return (

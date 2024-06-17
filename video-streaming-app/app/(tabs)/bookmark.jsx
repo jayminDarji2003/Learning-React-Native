@@ -12,6 +12,7 @@ const Bookmark = () => {
       </Text>
       <Text className="text-white text-xl p-3">{user.username}</Text>
       <Text className="text-white text-xl p-3">{user.email}</Text>
+      <Text className="text-white text-xl p-3">{user.id}</Text>
     </SafeAreaView>
   );
 };

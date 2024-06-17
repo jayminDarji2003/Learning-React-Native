@@ -5,7 +5,6 @@ import FormFields from "../../components/FormFields";
 import { useState } from "react";
 import CustomButton from "../../components/CustomButton";
 import { Link, router } from "expo-router";
-import { signIn } from "../../lib/appwrite";
 import axios from "axios";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import Toast from "react-native-toast-message";
@@ -44,10 +43,13 @@ const SignIn = () => {
         password: form.password,
       });
 
-      console.log("RESULT OF CREATING USER => ", result);
+     // console.log("RESULT OF CREATING USER => ", result);
 
       const username = result?.data?.user?.username;
       const email = result?.data?.user?.email;
+      const id = result?.data?.user?._id;
+
+      //console.log(username, email, id);
 
       //set it to global state.....
       // it is done by context
@@ -55,6 +57,7 @@ const SignIn = () => {
       setUser({
         email: email,
         username: username,
+        id: id,
       });
 
       router.replace("/home");

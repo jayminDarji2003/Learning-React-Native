@@ -15,32 +15,35 @@ import { icons } from "../../constants";
 import * as DocumentPicker from "expo-document-picker";
 import { router } from "expo-router";
 import axios from "axios";
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const Create = () => {
   const [uploading, setUploading] = useState(false);
+  const { user } = useGlobalContext();
   const [form, setForm] = useState({
     title: "",
     video: null,
     thumbnail: null,
     prompt: "",
+    user: "",
   });
 
   const openPicker = async (selectType) => {
-    // open file upload picker
-    const result = await DocumentPicker.getDocumentAsync({
-      type:
-        selectType === "image"
-          ? ["image/png", "image/jpg", "image/jpeg"]
-          : ["video/mp4", "video/gif"],
-    });
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: selectType === "image" ? "image/*" : "video/*",
+      });
 
-    if (!result.canceled) {
-      if (selectType === "image") {
-        setForm({ ...form, thumbnail: result.assets[0] });
+      if (!result.canceled) {
+        if (selectType === "image") {
+          setForm({ ...form, thumbnail: result.assets[0] });
+        }
+        if (selectType === "video") {
+          setForm({ ...form, video: result.assets[0] });
+        }
       }
-      if (selectType === "video") {
-        setForm({ ...form, video: result.assets[0] });
-      }
+    } catch (error) {
+      console.error("Error picking document: ", error);
     }
   };
 
@@ -57,18 +60,18 @@ const Create = () => {
       formData.append("prompt", form.prompt);
       formData.append("video", {
         uri: form.video.uri,
-        type: "video/mp4", // or the correct video MIME type
+        type: "video/mp4", // Ensure the MIME type matches the actual file type
         name: form.video.name,
       });
-      formData.append("thumbnail", {
+      formData.append("imageFile", {
         uri: form.thumbnail.uri,
-        type: "image/jpeg", // or the correct image MIME type
+        type: "image/jpeg", // Ensure the MIME type matches the actual file type
         name: form.thumbnail.name,
       });
+      formData.append("user", user.id);
 
-      // call api
       const result = await axios.post(
-        "http://192.168.119.122:4000/create",
+        "http://192.168.119.122:4000/video-upload",
         formData,
         {
           headers: {
@@ -77,13 +80,13 @@ const Create = () => {
         }
       );
 
-      console.log(result);
+      console.log("Upload success: ", result);
 
-      Alert.alert("Success", "post uploaded successfully");
+      Alert.alert("Success", "Post uploaded successfully");
       router.push("/home");
     } catch (error) {
-      console.log("ERROR OCCURED WHILE CREATING VIDEO");
-      console.log(error.response.data);
+      console.error("Error occurred while creating video: ", error);
+      Alert.alert("Upload failed", "There was an error uploading your video.");
     } finally {
       setForm({
         title: "",
@@ -91,7 +94,6 @@ const Create = () => {
         thumbnail: null,
         prompt: "",
       });
-
       setUploading(false);
     }
   };
@@ -102,9 +104,9 @@ const Create = () => {
         <Text className="text-2xl text-white font-psemibold">Upload video</Text>
 
         <FormFields
-          title="video title"
+          title="Video title"
           value={form.title}
-          placeholder="get your video a catch title..."
+          placeholder="Get your video a catchy title..."
           handleChangeText={(e) => setForm({ ...form, title: e })}
           otherStyles={"mt-5"}
         />
@@ -140,7 +142,6 @@ const Create = () => {
           <Text className="text-base text-gray-100 font-pmedium">
             Thumbnail image
           </Text>
-
           <TouchableOpacity onPress={() => openPicker("image")}>
             {form.thumbnail ? (
               <Image
@@ -155,7 +156,7 @@ const Create = () => {
                   resizeMode="contain"
                   className="w-5 h-5"
                 />
-                <Text className="text-sm text-gray-100 font-pmedium ">
+                <Text className="text-sm text-gray-100 font-pmedium">
                   Choose a file
                 </Text>
               </View>
@@ -172,7 +173,7 @@ const Create = () => {
         />
 
         <CustomButton
-          title={"submit & publish"}
+          title={"Submit & publish"}
           handlePress={submit}
           containerStyle={"mt-7"}
           isLoading={uploading}
