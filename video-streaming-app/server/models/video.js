@@ -16,6 +16,11 @@ const VideoSchema = new Schema({
         type: String,
         required: true,
     },
+    prompt: {
+        type: String,
+        required: true,
+        trim: true,
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',

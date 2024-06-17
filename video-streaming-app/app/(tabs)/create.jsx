@@ -14,6 +14,7 @@ import { Video, ResizeMode } from "expo-av";
 import { icons } from "../../constants";
 import * as DocumentPicker from "expo-document-picker";
 import { router } from "expo-router";
+import axios from "axios";
 
 const Create = () => {
   const [uploading, setUploading] = useState(false);
@@ -51,14 +52,38 @@ const Create = () => {
     setUploading(true);
 
     try {
+      const formData = new FormData();
+      formData.append("title", form.title);
+      formData.append("prompt", form.prompt);
+      formData.append("video", {
+        uri: form.video.uri,
+        type: "video/mp4", // or the correct video MIME type
+        name: form.video.name,
+      });
+      formData.append("thumbnail", {
+        uri: form.thumbnail.uri,
+        type: "image/jpeg", // or the correct image MIME type
+        name: form.thumbnail.name,
+      });
+
       // call api
-      // post request to server, save data to database
+      const result = await axios.post(
+        "http://192.168.119.122:4000/create",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log(result);
 
       Alert.alert("Success", "post uploaded successfully");
       router.push("/home");
     } catch (error) {
-      throw new Error(error);
       console.log("ERROR OCCURED WHILE CREATING VIDEO");
+      console.log(error.response.data);
     } finally {
       setForm({
         title: "",
