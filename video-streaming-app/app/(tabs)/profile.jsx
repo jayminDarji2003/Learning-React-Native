@@ -1,10 +1,18 @@
-import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import icons from "../../constants/icons";
 import { router } from "expo-router";
 import Toast from "react-native-toast-message";
+import Video from "react-native-video";
 
 const Profile = () => {
   const { user, setUser, isLoggedIn, setIsLoggedIn } = useGlobalContext();
@@ -22,6 +30,8 @@ const Profile = () => {
       text2: "Successfully logout 👋",
     });
   };
+
+  // const video = require("./myvideo.mlv");
 
   return (
     <SafeAreaView className="h-full bg-primary p-5">
@@ -55,12 +65,27 @@ const Profile = () => {
               </View>
             </View>
 
-            <View className="border border-secondary-100 my-2 h-[100vh]"></View>
+            <View className="my-2" style={styles.container}>
+              
+            </View>
           </View>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#000",
+  },
+  backgroundVideo: {
+    width: "100%",
+    height: 300,
+  },
+});
 
 export default Profile;
