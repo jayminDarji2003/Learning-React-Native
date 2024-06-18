@@ -48,7 +48,7 @@ export default function App() {
         ListFooterComponent={<Text style={styles.footerText}>End of List</Text>}
 
       />
-
+      {/*  */}
       {/* <Text>---------------------------------------------</Text> */}
     </View>
   );
@@ -94,3 +94,4 @@ const styles = StyleSheet.create({
     marginVertical: 20
   }
 });
+
