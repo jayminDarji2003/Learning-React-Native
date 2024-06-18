@@ -5,6 +5,7 @@ import {
   Image,
   RefreshControl,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -19,6 +20,7 @@ import VideoCard from "../../components/VideoCard";
 const Home = () => {
   const { data: posts, refetch } = useAppWrite(getAllPosts);
   const { data: latestPosts } = useAppWrite(getLatestPosts);
+
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = async () => {
@@ -27,8 +29,6 @@ const Home = () => {
     await refetch();
     setRefreshing(false);
   };
-
-  // console.log(posts);
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -66,7 +66,7 @@ const Home = () => {
               </Text>
 
               {/* here the ?? means if first whole array not exists then use [] array. */}
-              <Trending posts={latestPosts ?? []} />
+              <Trending />
             </View>
           </View>
         )}

@@ -173,7 +173,7 @@ const Create = () => {
         />
 
         <CustomButton
-          title={"Submit & publish"}
+          title={uploading ? "uploading..." : "Submit & publish"}
           handlePress={submit}
           containerStyle={"mt-7"}
           isLoading={uploading}

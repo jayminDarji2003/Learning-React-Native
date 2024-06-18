@@ -3,19 +3,22 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  ScrollView,
-  StyleSheet,
+  FlatList,
+  ActivityIndicator,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import icons from "../../constants/icons";
 import { router } from "expo-router";
 import Toast from "react-native-toast-message";
-import Video from "react-native-video";
+import ProfileVideoCard from "../../components/ProfileVideoCard";
 
 const Profile = () => {
   const { user, setUser, isLoggedIn, setIsLoggedIn } = useGlobalContext();
+  const [videos, setVideos] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const handleLogout = () => {
     setIsLoggedIn(false);
@@ -31,61 +34,83 @@ const Profile = () => {
     });
   };
 
-  // const video = require("./myvideo.mlv");
+  const getAllVideos = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch("http://192.168.119.122:4000/videos");
+      const jsonVideos = await response.json();
+      setVideos(jsonVideos.videos);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Error occurred while getting videos in frontend:", error);
+    }
+  };
 
-  return (
-    <SafeAreaView className="h-full bg-primary p-5">
-      <ScrollView>
-        <View>
-          <TouchableOpacity className="items-end gap-1" onPress={handleLogout}>
-            <Image source={icons.logout} className="h-8 w-8" />
-            <Text className="text-sm font-semibold text-gray-100">Logout</Text>
-          </TouchableOpacity>
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await getAllVideos();
+    setRefreshing(false);
+  };
 
-          <View className="my-3 ">
-            <View className=" items-center">
-              <View className="bg-blue-200 h-14 w-14 justify-center items-center  rounded-lg border border-secondary-100">
-                <Text className="text-5xl font-semibold">
-                  {user.username.charAt(0)}
-                </Text>
-              </View>
-              <Text className="text-gray-100 my-2 font-pregular text-xl font-semibold">
-                {user.username}
-              </Text>
-            </View>
+  useEffect(() => {
+    getAllVideos();
+  }, []);
 
-            <View className="items-center flex-row justify-center mt-3 space-x-10">
-              <View className="justify-center items-center">
-                <Text className="text-gray-100 font-bold text-lg">10</Text>
-                <Text className="text-gray-100 font-bold text-md">Posts</Text>
-              </View>
-              <View className="justify-center items-center">
-                <Text className="text-gray-100 font-bold text-lg">1.2k</Text>
-                <Text className="text-gray-100 font-bold text-md">Views</Text>
-              </View>
-            </View>
+  const renderHeader = () => (
+    <View>
+      <TouchableOpacity className="items-end gap-1 p-5" onPress={handleLogout}>
+        <Image source={icons.logout} className="h-8 w-8" />
+        <Text className="text-sm font-semibold text-gray-100">Logout</Text>
+      </TouchableOpacity>
 
-            <View className="my-2" style={styles.container}>
-              
-            </View>
+      <View className="my-3 ">
+        <View className=" items-center">
+          <View className="bg-blue-200 h-14 w-14 justify-center items-center  rounded-lg border border-secondary-100">
+            <Text className="text-5xl font-semibold">
+              {user.username.charAt(0)}
+            </Text>
+          </View>
+          <Text className="text-gray-100 my-2 font-pregular text-xl font-semibold">
+            {user.username}
+          </Text>
+        </View>
+
+        <View className="items-center flex-row justify-center mt-3 space-x-10">
+          <View className="justify-center items-center">
+            <Text className="text-gray-100 font-bold text-lg">
+              {videos?.length}
+            </Text>
+            <Text className="text-gray-100 font-bold text-md">Posts</Text>
+          </View>
+          <View className="justify-center items-center">
+            <Text className="text-gray-100 font-bold text-lg">1.2k</Text>
+            <Text className="text-gray-100 font-bold text-md">Views</Text>
           </View>
         </View>
-      </ScrollView>
+      </View>
+    </View>
+  );
+
+  const renderItem = ({ item }) => (
+    <ProfileVideoCard item={item} user={user} key={item._id} />
+  );
+
+  return (
+    <SafeAreaView className="h-full bg-primary">
+      <FlatList
+        data={videos}
+        renderItem={renderItem}
+        keyExtractor={(item) => item._id}
+        ListHeaderComponent={renderHeader}
+        ListFooterComponent={
+          isLoading ? <ActivityIndicator size="large" color="#00ff00" /> : null
+        }
+        refreshing={refreshing}
+        onRefresh={onRefresh}
+      />
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#000",
-  },
-  backgroundVideo: {
-    width: "100%",
-    height: 300,
-  },
-});
 
 export default Profile;
