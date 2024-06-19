@@ -40,7 +40,7 @@ const SignUp = () => {
     }
 
     try {
-      const result = await axios.post("http://192.168.119.122:4000/signup", {
+      const result = await axios.post("http://192.168.8.122:4000/signup", {
         username: form.username,
         email: form.email,
         password: form.password,

@@ -51,6 +51,7 @@ export default function Index() {
               title="Continue with Email"
               handlePress={() => {
                 router.push("/sign-up");
+                // router.push("/home");
               }}
               containerStyle="mt-7"
             />

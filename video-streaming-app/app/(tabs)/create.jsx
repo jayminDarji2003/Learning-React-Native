@@ -71,7 +71,7 @@ const Create = () => {
       formData.append("user", user.id);
 
       const result = await axios.post(
-        "http://192.168.119.122:4000/video-upload",
+        "http://192.168.8.122:4000/video-upload",
         formData,
         {
           headers: {

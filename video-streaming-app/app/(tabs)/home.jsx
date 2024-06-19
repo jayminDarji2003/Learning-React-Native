@@ -13,29 +13,44 @@ import { images } from "../../constants";
 import SearchInput from "../../components/SearchInput";
 import Trending from "../../components/Trending";
 import EmptyState from "../../components/EmptyState";
-import { getAllPosts, getLatestPosts } from "../../lib/appwrite";
-import useAppWrite from "../../lib/useAppWrite";
 import VideoCard from "../../components/VideoCard";
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const Home = () => {
-  const { data: posts, refetch } = useAppWrite(getAllPosts);
-  const { data: latestPosts } = useAppWrite(getLatestPosts);
-
+  const { user } = useGlobalContext();
+  const [videos, setVideos] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+
+  const getAllVideos = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch("http://192.168.8.122:4000/videos");
+      const jsonVideos = await response.json();
+      setVideos(jsonVideos.videos);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Error occurred while getting videos in frontend:", error);
+    }
+  };
 
   const onRefresh = async () => {
     setRefreshing(true);
-    // re call videos -> if any new video appeared
-    await refetch();
+    await getAllVideos();
     setRefreshing(false);
   };
+
+  useEffect(() => {
+    getAllVideos();
+  }, []);
 
   return (
     <SafeAreaView className="bg-primary h-full">
       <FlatList
-        data={posts}
+        data={videos}
         keyExtractor={(item) => item.$id}
-        renderItem={({ item }) => <VideoCard item={item} />}
+        renderItem={({ item }) => <VideoCard item={item} key={item._id} />}
         ListHeaderComponent={() => (
           <View className="my-6 px-4 space-y-6">
             <View className="justify-between items-start flex-row mb-6">
@@ -44,7 +59,7 @@ const Home = () => {
                   Welcome Back
                 </Text>
                 <Text className="text-2xl font-psemibold text-white">
-                  codewithjaymin
+                  {user.username}
                 </Text>
               </View>
 
@@ -74,6 +89,8 @@ const Home = () => {
           <EmptyState
             title="No videos Found"
             subtitle="Be the first one to upload the video"
+            path="/create"
+            buttonTitle="Create video"
           />
         )}
         refreshControl={

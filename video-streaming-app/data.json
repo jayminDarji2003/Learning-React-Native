@@ -4,17 +4,6 @@
     "videos": [
         {
             "__v": 0,
-            "_id": "66718f7085e83c6a031b3b18",
-            "createdAt": "2024-06-18T13:45:20.905Z",
-            "prompt": "Arjijit singh song",
-            "thumbnail": "https://res.cloudinary.com/dc1tv6sle/image/upload/v1718718095/aora/e66d7psl17tfs6pzfaxz.jpg",
-            "title": "Song",
-            "updatedAt": "2024-06-18T13:45:20.905Z",
-            "user": "666ed27e348a881b8d8122d5",
-            "videoUrl": "https://res.cloudinary.com/dc1tv6sle/video/upload/v1718718318/aora/mhfgpi5czuz2rw8trc69.mp4"
-        },
-        {
-            "__v": 0,
             "_id": "66703ecce02721292ca120c6",
             "createdAt": "2024-06-17T13:49:00.528Z",
             "prompt": "My second video prompt",

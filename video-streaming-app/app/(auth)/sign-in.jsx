@@ -38,12 +38,12 @@ const SignIn = () => {
     }
 
     try {
-      const result = await axios.post("http://192.168.119.122:4000/login", {
+      const result = await axios.post("http://192.168.8.122:4000/login", {
         email: form.email,
         password: form.password,
       });
 
-     // console.log("RESULT OF CREATING USER => ", result);
+      // console.log("RESULT OF CREATING USER => ", result);
 
       const username = result?.data?.user?.username;
       const email = result?.data?.user?.email;

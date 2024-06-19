@@ -1,5 +1,5 @@
 import { View, Text, FlatList } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SearchInput from "../../components/SearchInput";
 import EmptyState from "../../components/EmptyState";
@@ -10,16 +10,32 @@ import { useLocalSearchParams } from "expo-router";
 
 const Search = () => {
   const { query } = useLocalSearchParams();
-  const { data: posts, refetch } = useAppWrite(() => searchPosts(query));
+  const [searchPosts, setSearchPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const getSearchVideos = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `http://192.168.8.122:4000/search?q=${query}`
+      );
+      const jsonVideos = await response.json();
+      setSearchPosts(jsonVideos.videos);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error("Error occurred while getting search videos", error);
+    }
+  };
 
   useEffect(() => {
-    refetch();
+    getSearchVideos();
   }, [query]);
 
   return (
     <SafeAreaView className="bg-primary h-full">
       <FlatList
-        data={posts}
+        data={searchPosts}
         keyExtractor={(item) => item.$id}
         renderItem={({ item }) => <VideoCard item={item} />}
         ListHeaderComponent={() => (
@@ -38,6 +54,8 @@ const Search = () => {
           <EmptyState
             title="No videos Found"
             subtitle="No video found for this query."
+            path="/create"
+            buttonTitle="Create video"
           />
         )}
       />
