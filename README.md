@@ -1,5 +1,12 @@
 # Learning React Native 
 
+## create React Native app
+
+```
+  npx create-expo-app@latest --template
+```
+After running above command choose "black"
+
 - I'm learning React Native from ______ .
 - Great start of my React Native journey.
 - Learned lots of things. 
